@@ -1,10 +1,9 @@
-import { Notification } from '@application/entities/Notification';
-import { NotificationsRepository } from 'src/application/repositories/notification-repository';
+import { Notification } from '@application/entities/notification';
+import { NotificationsRepository } from '@application/repositories/notification-repository';
 
-export class InMemoryNotificationRepository implements NotificationsRepository {
-  findManyByRecipientId(recipientId: string): Promise<Notification[]> {
-    throw new Error('Method not implemented.');
-  }
+export class InMemoryNotificationsRepository
+  implements NotificationsRepository
+{
   public notifications: Notification[] = [];
 
   async findById(notificationId: string): Promise<Notification | null> {
@@ -19,10 +18,15 @@ export class InMemoryNotificationRepository implements NotificationsRepository {
     return notification;
   }
 
-  async countManyByRecipientId(recipientId: string): Promise<number> {
+  async findManyByRecipientId(recipientId: string): Promise<Notification[]> {
     return this.notifications.filter(
-      (notification) => notification.recipientId === recipientId,
-    ).length;
+      (item) => item.recipientId === recipientId,
+    );
+  }
+
+  async countManyByRecipientId(recipientId: string): Promise<number> {
+    return this.notifications.filter((item) => item.recipientId === recipientId)
+      .length;
   }
 
   async create(notification: Notification) {
